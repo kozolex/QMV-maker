@@ -20,29 +20,29 @@ class Application(tk.Frame):
             result = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             print(result.stdout.decode())
         except subprocess.CalledProcessError as e:
-            print(f"Wystąpił błąd podczas tworzenia pliku final_file.mp4: {str(e)}")
+            print(f"Error: {str(e)}")
 
     def create_widgets(self):
         self.select_button = tk.Button(self)
-        self.select_button["text"] = "Wybierz pliki"
+        self.select_button["text"] = "Add MP4 files"
         self.select_button["command"] = self.select_files
         self.select_button.pack(side="top", fill="both", expand=True)
 
         self.file_listbox = tk.Listbox(self)
         self.file_listbox.pack(side="top", fill="both", expand=True)
 
-        self.output_label = tk.Label(self, text="Ścieżka do pliku wynikowego:")
+        self.output_label = tk.Label(self, text="Destination path:")
         self.output_label.pack(side="top")
         self.output_entry = tk.Entry(self)
         self.output_entry.pack(side="top", fill="both", expand=True)
 
         self.output_button = tk.Button(self)
-        self.output_button["text"] = "Wybierz miejsce zapisu"
+        self.output_button["text"] = "Add destination file"
         self.output_button["command"] = self.select_output
         self.output_button.pack(side="top", fill="both", expand=True)
 
         self.save_button = tk.Button(self)
-        self.save_button["text"] = "Zapisz do pliku txt"
+        self.save_button["text"] = "Start processing"
         self.save_button["command"] = self.save_to_file
         self.save_button.pack(side="top", fill="both", expand=True)
 
@@ -61,14 +61,14 @@ class Application(tk.Frame):
     def save_to_file(self):
         output_file = self.output_entry.get()
         if not output_file:
-            messagebox.showerror("Błąd", "Proszę podać ścieżkę do pliku wynikowego.")
+            messagebox.showerror("Error", "Please enter the path to the resulting file.")
             return
         filenames = self.file_listbox.get(0, tk.END)
         with open('./bin/files.txt', 'w') as f:
             for filename in filenames:
                 f.write(f"file {os.path.relpath(filename)}\n")
         self.marge_videos()
-        messagebox.showinfo("Sukces", "Pliki zostały zapisane do pliku txt.")
+        messagebox.showinfo("Success", "The files have been merged.")
 
 root = tk.Tk()
 root.wm_title("QMV Maker v1.0")
