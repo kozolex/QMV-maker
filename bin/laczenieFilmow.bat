@@ -1,0 +1,1 @@
+ffmpeg -f concat -i files.txt -vcodec copy -acodec copy final_file.mp4
