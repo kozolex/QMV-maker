@@ -31,6 +31,16 @@ class Application(tk.Frame):
         self.file_listbox = tk.Listbox(self)
         self.file_listbox.pack(side="top", fill="both", expand=True)
 
+        self.up_button = tk.Button(self)
+        self.up_button["text"] = "Move Up"
+        self.up_button["command"] = self.move_up
+        self.up_button.pack(side="top", fill="both", expand=True)
+
+        self.down_button = tk.Button(self)
+        self.down_button["text"] = "Move Down"
+        self.down_button["command"] = self.move_down
+        self.down_button.pack(side="top", fill="both", expand=True)
+
         self.output_label = tk.Label(self, text="Destination path:")
         self.output_label.pack(side="top")
         self.output_entry = tk.Entry(self)
@@ -69,6 +79,26 @@ class Application(tk.Frame):
                 f.write(f"file {os.path.relpath(filename)}\n")
         self.marge_videos()
         messagebox.showinfo("Success", "The files have been merged.")
+
+    def move_up(self):
+        selected = self.file_listbox.curselection()
+        if selected:
+            index = selected[0]
+            if index != 0:
+                value = self.file_listbox.get(index)
+                self.file_listbox.delete(index)
+                self.file_listbox.insert(index-1, value)
+                self.file_listbox.selection_set(index-1)
+
+    def move_down(self):
+        selected = self.file_listbox.curselection()
+        if selected:
+            index = selected[0]
+            if index != self.file_listbox.size()-1:
+                value = self.file_listbox.get(index)
+                self.file_listbox.delete(index)
+                self.file_listbox.insert(index+1, value)
+                self.file_listbox.selection_set(index+1)
 
 root = tk.Tk()
 root.wm_title("QMV Maker v1.0")
